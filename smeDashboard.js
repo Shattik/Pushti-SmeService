@@ -1,7 +1,7 @@
 const supabase = require("./db.js");
 const router = require("express").Router();
 
-async function processSellHistoryData(sellHistoryData, buyHistoryData) {
+async function processTransactionHistoryData(sellHistoryData, buyHistoryData) {
   let transactionData = {};
   for (let i = 0; i < sellHistoryData.length; i++) {
     const month = sellHistoryData[i].month_no;
@@ -143,8 +143,6 @@ router.post("/", async (req, res) => {
 
   let rankandpoint = rankandpointArray[0];
 
-  console.log(rankandpoint);
-
   // populate data table for next rank point point reaching
   let rankTable = await supabase.any(
     `SELECT "className", "max", "min", "cashback", "nextRank" FROM "Rank" where "Rank"."className" = $1`,
@@ -155,6 +153,8 @@ router.post("/", async (req, res) => {
   rankandpoint.maxPoint = rankTable[0].max;
   rankandpoint.nextRank = rankTable[0].nextRank;
   rankandpoint.cashback = rankTable[0].cashback;
+
+  console.log(rankandpoint);
 
   let sellHistoryData = await supabase.any(
     `SELECT EXTRACT('MONTH' FROM "timestamp") AS month_no, SUM("total") as total \
@@ -173,6 +173,7 @@ router.post("/", async (req, res) => {
   );
 
   console.log(buyHistoryData);
+  console.log(sellHistoryData);
 
   let transactionHistoryOneYear = await processTransactionHistoryData(
     sellHistoryData,
