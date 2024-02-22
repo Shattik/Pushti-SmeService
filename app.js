@@ -14,6 +14,7 @@ const sellRouter = require("./smeSell");
 const buyRouter = require("./smeBuy");
 const loanRouter = require("./smeLoan");
 const leaderboardRouter = require("./smeLeaderboard");
+const supportRouter = require("./smeSupport");
 
 app.use("/dashboard", dashboardRouter);
 app.use("/inventory", inventoryRouter);
@@ -21,6 +22,7 @@ app.use("/sell", sellRouter);
 app.use("/buy", buyRouter);
 app.use("/loan", loanRouter);
 app.use("/leaderboard", leaderboardRouter);
+app.use("/support", supportRouter);
 
 app.listen(PORT, async () => {
   console.log(`Vendor Service listening on port ${PORT}`);
